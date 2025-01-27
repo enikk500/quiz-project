@@ -93,6 +93,7 @@ func CreateCompetition(context *gin.Context, db *gorm.DB) {
 	var req_competition models.Competition
 	var competition_found models.Competition
 	context.BindJSON(&req_competition)
+
 	err := db.Where("name = ?", req_competition.Name).First(&competition_found).Error
 	if err == nil {
 		context.Header("access-control-allow-origin", "*")

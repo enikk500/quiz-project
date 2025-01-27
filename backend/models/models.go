@@ -41,7 +41,7 @@ type Option struct {
 // Question from a competition
 type Question struct {
 	ID            uint     `json:"id"; gorm:"primary_key"`
-	CompetitionID uint     `json:"Competitionid"`
+	CompetitionID uint     `json:"competitionid"`
 	Question      string   `json:"question"`
 	Options       []Option `json:"options"`
 	NumberCorrect uint     `json:"numcorrect"`

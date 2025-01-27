@@ -22,7 +22,8 @@ func main() {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&models.Score{},
+	db.AutoMigrate(
+		&models.Score{},
 		&models.User{},
 		&models.Question{},
 		&models.Competition{},
@@ -44,9 +45,9 @@ func initializeEndpoints() *gin.Engine {
 	r.GET("/explore/", ExploreCompetitions)
 	r.GET("/Competition/:competitionid", GetQuestions)
 
-	r.POST("/create/Competition/", CreateCompetition)
-	r.DELETE("/delete/Competition/", DeleteCompetition)
-	r.GET("/get/Competition/", GetAllCompetitions)
+	r.POST("/create/competition/", CreateCompetition)
+	r.DELETE("/delete/сompetition/", DeleteCompetition)
+	r.GET("/get/сompetition/", GetAllCompetitions)
 
 	r.GET("/question/:questionid", GetQuestion)
 	r.POST("/create/question/:competitionid", AddQuestion)

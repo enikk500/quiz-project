@@ -1,3 +1,4 @@
+import requests
 import telebot
 import webbrowser
 from telebot import types
@@ -17,7 +18,8 @@ def start(message):
 
 def on_click(message):
   if message.text == 'Посмотреть опросы':
-    bot.send_message(message.chat.id, 'Вот такие опросы сейчас есть:')
+    r = requests.get('http://localhost:8080/users')
+    bot.send_message(message.chat.id, 'Вот такие опросы сейчас есть:' + r.text)
   elif message.text == 'Войти':
     bot.send_message(message.chat.id, 'Вход пока еще не доступен')
 
