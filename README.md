@@ -11,5 +11,5 @@
 ## Используемые языки:
 * <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=ffffff"/>
 * <img src="https://img.shields.io/badge/go-00ADD8?style=for-the-badge&logo=go&logoColor=ffffff"/>
-* <img src="https://hugovk.github.io/python-logos/img/PyCon%20India%202019.png">
+* <img src="https://www.python.org/static/community_logos/python-logo.png">
 
