@@ -215,12 +215,16 @@ func SubmitCompetition(context *gin.Context, db *gorm.DB) {
 	var Competition models.Competition
 	var user models.User
 	context.BindJSON(&score)
+	print("Competition id: " + string(score.CompetitionID))
 	if err := db.Where("id = ?", score.CompetitionID).First(&Competition).Error; err != nil {
 		context.Header("access-control-allow-origin", "*")
 		context.AbortWithStatus(http.StatusNotFound)
 		fmt.Println(err)
 	} else {
+		print("User id: " + string(score.UserID))
+
 		db.Where("id = ?", score.UserID).First(&user)
+
 		if err2 := db.Where("user_id = ? AND competition_id = ?", score.UserID, score.CompetitionID).First(&score_record).Error; err2 != nil {
 			score.Attempts = 1
 			score.Username = user.Username

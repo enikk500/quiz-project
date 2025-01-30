@@ -1,6 +1,7 @@
 import requests
 import telebot
-import webbrowser
+import sqlite3
+import json
 from telebot import types
 
 bot = telebot.TeleBot('8046082557:AAENMuSYJvX5916q0-zZwhhQbrwYWUYJJ7E')
@@ -16,28 +17,29 @@ def start(message):
   bot.send_message(message.chat.id,f'Привет, {message.from_user.first_name} {message.from_user.last_name}', reply_markup=markup)
   bot.register_next_step_handler(message, on_click)
 
+@bot.message_handler(content_types=["text"])
 def on_click(message):
-  if message.text == 'Посмотреть опросы':
-    r = requests.get('http://localhost:8080/users')
-    bot.send_message(message.chat.id, 'Вот такие опросы сейчас есть:' + r.text)
-  elif message.text == 'Войти':
-    bot.send_message(message.chat.id, 'Вход пока еще не доступен')
+    if message.text == 'Посмотреть опросы':
+        try:
+            response = requests.get('http://localhost:8080/explore')
+            response.raise_for_status()
+            data = response.json() 
+            if isinstance(data, list) and data:
+                str = "\n".join(f"- {item['name']}" for item in data if 'name' in item)
+                bot.reply_to(message, f'Вот такие опросы сейчас есть:\n{str}')
+            else:
+                bot.reply_to(message, 'Опросов пока нет.')
+        except requests.RequestException as e:
+            bot.reply_to(message, f'Ошибка при получении данных: {e}')
 
-
-# @bot.message_handler(commands=['start' , 'hello'])
-# def main(message):
-#   bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name} {message.from_user.last_name}')
-
-# @bot.message_handler(commands=['help'])
-# def main(message):
-#   bot.send_message(message.chat.id, '<b>Help</b> <u>Information</u>', parse_mode='html')
-
-
-@bot.message_handler()
-def info(message):
-  if message.text.lower() == 'привет':
-    bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name} {message.from_user.last_name}')
-  elif message.text.lower() == 'id':
-    bot.reply_to(message, f'ID: {message.from_user.id}')
-
+# @bot.message_handler(content_types=["text"])
+# def quiz(message):
+#   if message.text == '3':
+#     try:
+#       response = requests.get('http://localhost:8080/explore')
+#       response.raise_for_status()
+#       data = response.json()
+#       if isinstance(data, list) and data:
+#         str = "\n".join(f"- {item['name']}")
+#           if str == 
 bot.polling(non_stop=True)
